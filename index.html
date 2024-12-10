@@ -42,11 +42,13 @@
   </form>
   <p id="loadingMessage"></p>
   <p id="resultText"></p>
+  <p id="zodiacMessage"></p>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const form = document.getElementById('calculatorForm');
       const loadingMessage = document.getElementById('loadingMessage');
       const resultText = document.getElementById('resultText');
+      const zodiacMessage = document.getElementById('zodiacMessage');
 
       const loadingMessages = [
         "Reconfiguring the star charts...",
@@ -54,6 +56,38 @@
         "Dusting off the cosmic calendar...",
         "Calculating with quantum cupcakes...",
         "Syncing with the celestial mainframe..."
+      ];
+
+      // Zodiac pairings and messages
+      const zodiacMessages = {
+        "Aries-1": "Aries' bold independence meets Libra's harmony and collaboration. Your half-birthday invites you to balance your fiery ambitions with appreciation for teamwork and relationships. Reflect on how you can give as much as you take.",
+        "Taurus-2": "Taurus' grounded stability contrasts with Scorpio's emotional depth and intensity. Use this time to balance material comforts with emotional growth, and find ways to share your abundance with those you love.",
+        "Gemini-3": "Gemini's curiosity aligns with Sagittarius' love of adventure. Your half-birthday is a perfect moment to consider how your intellectual pursuits can inspire broader horizons and foster meaningful connections.",
+        "Cancer-4": "Cancer’s nurturing energy contrasts with Capricorn’s disciplined focus. This is a time to reflect on the balance between care for others and achieving long-term goals. Give back by fostering both emotional and practical support.",
+        "Leo-5": "Leo’s radiant self-expression contrasts with Aquarius’ visionary ideals. Your half-birthday encourages you to align personal joy with collective growth. Consider how your talents can inspire and uplift your community.",
+        "Virgo-6": "Virgo’s analytical precision meets Pisces’ dreamy intuition. This is a time to embrace creativity and compassion while keeping things grounded. Reflect on how your actions can weave together practicality and imagination.",
+        "Libra-7": "Libra’s love of harmony contrasts with Aries’ assertiveness. This half-birthday invites you to balance your desire for peace with moments of courageous action. Find ways to create beauty and fairness in bold new ways.",
+        "Scorpio-8": "Scorpio’s emotional depth balances with Taurus’ grounded stability. Use this time to reflect on the bonds you’ve built and nurture trust with those around you. Share both your strength and your vulnerability.",
+        "Sagittarius-9": "Sagittarius’ expansive mindset pairs with Gemini’s curiosity. Your half-birthday is a reminder to explore new ideas and perspectives while staying open to meaningful dialogue. Celebrate the connections that broaden your world.",
+        "Capricorn-10": "Capricorn’s focus on achievement contrasts with Cancer’s nurturing care. Reflect on how your ambitions can serve not just yourself but also those around you. Use this time to build foundations of both love and legacy.",
+        "Aquarius-11": "Aquarius’ big-picture thinking complements Leo’s vibrant self-expression. This is a moment to channel your ideas into actions that shine a light on collective progress. Lead by example with passion and purpose.",
+        "Pisces-12": "Pisces’ intuitive depth contrasts with Virgo’s meticulous precision. Your half-birthday encourages you to balance dreamlike creativity with grounded practicality. Give back by turning visions into tangible acts of kindness."
+      };
+
+      // Zodiac signs
+      const zodiacSigns = [
+        { sign: "Aries", start: [3, 21], end: [4, 19] },
+        { sign: "Taurus", start: [4, 20], end: [5, 20] },
+        { sign: "Gemini", start: [5, 21], end: [6, 20] },
+        { sign: "Cancer", start: [6, 21], end: [7, 22] },
+        { sign: "Leo", start: [7, 23], end: [8, 22] },
+        { sign: "Virgo", start: [8, 23], end: [9, 22] },
+        { sign: "Libra", start: [9, 23], end: [10, 22] },
+        { sign: "Scorpio", start: [10, 23], end: [11, 21] },
+        { sign: "Sagittarius", start: [11, 22], end: [12, 21] },
+        { sign: "Capricorn", start: [12, 22], end: [1, 19] },
+        { sign: "Aquarius", start: [1, 20], end: [2, 18] },
+        { sign: "Pisces", start: [2, 19], end: [3, 20] }
       ];
 
       form.addEventListener('submit', function (event) {
@@ -73,6 +107,7 @@
 
         // Clear previous results
         resultText.textContent = "";
+        zodiacMessage.textContent = "";
         loadingMessage.textContent = "";
 
         // Start loading messages
@@ -99,11 +134,31 @@
           const halfDay = halfBirthday.getDate();
           const halfMonth = monthNames[halfBirthday.getMonth()];
 
+          // Determine zodiac signs
+          const userZodiac = getZodiacSign(day, month);
+          const halfBirthdayZodiac = getZodiacSign(halfDay, halfBirthday.getMonth() + 1);
+
           // Display the half-birthday
           loadingMessage.textContent = ""; // Clear the loading message
           resultText.textContent = `Your half-birthday is on: ${halfDay} ${halfMonth}`;
+
+          // Display zodiac message based on the signs
+          const key = `${userZodiac}-${halfBirthdayZodiac}`;
+          zodiacMessage.textContent = zodiacMessages[key];
+
         }, 5000);
       });
+
+      // Function to determine zodiac sign
+      function getZodiacSign(day, month) {
+        for (let i = 0; i < zodiacSigns.length; i++) {
+          const sign = zodiacSigns[i];
+          if ((month == sign.start[0] && day >= sign.start[1]) || (month == sign.end[0] && day <= sign.end[1])) {
+            return sign.sign;
+          }
+        }
+        return "";
+      }
     });
   </script>
 </body>
