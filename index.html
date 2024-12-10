@@ -159,26 +159,40 @@
         }
 
         /* Loading Message Section */
-        function showLoadingMessages() {
-            const messages = [
-                "Reconfiguring the star charts...",
-                "Consulting with birthday fairies...",
-                "Aligning celestial energies...",
-                "Decoding your zodiac destiny...",
-                "Cross-referencing the cosmic database..."
-            ];
+function showLoadingMessages() {
+    const messages = [
+        "Reconfiguring the star charts...",
+        "Consulting with birthday fairies...",
+        "Aligning celestial energies...",
+        "Decoding your zodiac destiny...",
+        "Cross-referencing the cosmic database...",
+        "Calibrating planetary orbits...",
+        "Communing with the constellations...",
+        "Charting the astral map...",
+        "Tuning the cosmic vibrations...",
+        "Asking the Moon for advice...",
+        "Realigning the galaxy grid...",
+        "Whispering to the Milky Way...",
+        "Synchronizing star patterns...",
+        "Measuring the light of distant suns...",
+        "Harmonizing with the zodiac spheres...",
+        "Tracking the paths of celestial bodies...",
+        "Consulting with cosmic gatekeepers...",
+        "Balancing universal energies...",
+        "Illuminating cosmic truths...",
+        "Mapping the cosmic calendar..."
+    ];
 
-            let index = 0;
-            const loadingDiv = document.getElementById("loadingMessages");
-            loadingDiv.textContent = messages[index];
+    const loadingDiv = document.getElementById("loadingMessages");
 
-            const interval = setInterval(() => {
-                index = (index + 1) % messages.length;
-                loadingDiv.textContent = messages[index];
-            }, 1000);
+    const interval = setInterval(() => {
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        loadingDiv.textContent = randomMessage;
+    }, 1000);
 
-            setTimeout(() => clearInterval(interval), 5000); // Stop after 5 seconds
-        }
+    setTimeout(() => clearInterval(interval), 5000); // Stop after 5 seconds
+}
+
     </script>
 </body>
 </html>
