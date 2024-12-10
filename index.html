@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Half-Birthday Calculator</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        form {
+            margin: 20px 0;
+        }
         #resultContainer {
             display: none;
         }
         #loadingMessages {
-            font-size: 18px;
             font-style: italic;
+            color: #888;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -18,10 +27,10 @@
     <h1>Half-Birthday Calculator</h1>
     <form id="birthdayForm">
         <label for="birthDay">Day of Birth (DD):</label>
-        <input type="number" id="birthDay" min="1" max="31" required><br>
+        <input type="number" id="birthDay" placeholder="DD" min="1" max="31" required><br>
 
         <label for="birthMonth">Month of Birth (MM):</label>
-        <input type="number" id="birthMonth" min="1" max="12" required><br>
+        <input type="number" id="birthMonth" placeholder="MM" min="1" max="12" required><br>
 
         <label for="amPm">AM/PM of Birth:</label>
         <input type="radio" name="amPm" value="AM" required> AM
@@ -38,109 +47,109 @@
 
     <script>
         // Zodiac signs with date ranges
-        function getZodiacSign(date) {
-            const zodiacSigns = [
-                { sign: "Capricorn", start: [12, 22], end: [1, 19] },
-                { sign: "Aquarius", start: [1, 20], end: [2, 18] },
-                { sign: "Pisces", start: [2, 19], end: [3, 20] },
-                { sign: "Aries", start: [3, 21], end: [4, 19] },
-                { sign: "Taurus", start: [4, 20], end: [5, 20] },
-                { sign: "Gemini", start: [5, 21], end: [6, 20] },
-                { sign: "Cancer", start: [6, 21], end: [7, 22] },
-                { sign: "Leo", start: [7, 23], end: [8, 22] },
-                { sign: "Virgo", start: [8, 23], end: [9, 22] },
-                { sign: "Libra", start: [9, 23], end: [10, 22] },
-                { sign: "Scorpio", start: [10, 23], end: [11, 21] },
-                { sign: "Sagittarius", start: [11, 22], end: [12, 21] }
-            ];
+        const zodiacSigns = [
+            { sign: "Capricorn", start: [12, 22], end: [1, 19] },
+            { sign: "Aquarius", start: [1, 20], end: [2, 18] },
+            { sign: "Pisces", start: [2, 19], end: [3, 20] },
+            { sign: "Aries", start: [3, 21], end: [4, 19] },
+            { sign: "Taurus", start: [4, 20], end: [5, 20] },
+            { sign: "Gemini", start: [5, 21], end: [6, 20] },
+            { sign: "Cancer", start: [6, 21], end: [7, 22] },
+            { sign: "Leo", start: [7, 23], end: [8, 22] },
+            { sign: "Virgo", start: [8, 23], end: [9, 22] },
+            { sign: "Libra", start: [9, 23], end: [10, 22] },
+            { sign: "Scorpio", start: [10, 23], end: [11, 21] },
+            { sign: "Sagittarius", start: [11, 22], end: [12, 21] }
+        ];
 
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
+        // Zodiac messages
+        const zodiacMessages = {
+            "Aries-Libra": "Aries' bold independence meets Libra's harmony. Balance ambition with appreciation for teamwork.",
+            "Taurus-Scorpio": "Taurus' stability contrasts with Scorpio's emotional depth. Reflect on balancing comfort and growth.",
+            "Gemini-Sagittarius": "Gemini's curiosity aligns with Sagittarius' adventurous spirit. Broaden horizons and deepen connections.",
+            "Cancer-Capricorn": "Cancer's nurturing care meets Capricorn's discipline. Balance emotional needs with long-term goals.",
+            "Leo-Aquarius": "Leo's self-expression contrasts with Aquarius' collective vision. Lead with passion and purpose.",
+            "Virgo-Pisces": "Virgo's precision complements Pisces' intuition. Balance practicality with creativity.",
+            "Libra-Aries": "Libra's harmony contrasts with Aries' assertiveness. Balance peace with bold action.",
+            "Scorpio-Taurus": "Scorpio's emotional depth balances Taurus' stability. Reflect on vulnerability and trust.",
+            "Sagittarius-Gemini": "Sagittarius' expansiveness contrasts with Gemini's curiosity. Explore new ideas and celebrate growth.",
+            "Capricorn-Cancer": "Capricorn's ambition meets Cancer's care. Build both legacy and love.",
+            "Aquarius-Leo": "Aquarius' visionary ideals complement Leo's vibrant energy. Lead boldly and inspire others.",
+            "Pisces-Virgo": "Pisces' creativity contrasts with Virgo's precision. Reflect on turning dreams into reality."
+        };
 
-            for (let i = 0; i < zodiacSigns.length; i++) {
-                const sign = zodiacSigns[i];
-                if ((month === sign.start[0] && day >= sign.start[1]) || (month === sign.end[0] && day <= sign.end[1])) {
+        // Helper function to determine the zodiac sign
+        function getZodiacSign(day, month) {
+            for (let sign of zodiacSigns) {
+                if (
+                    (month === sign.start[0] && day >= sign.start[1]) ||
+                    (month === sign.end[0] && day <= sign.end[1])
+                ) {
                     return sign.sign;
                 }
             }
             return "Capricorn"; // Default fallback
         }
 
-        // Function to calculate half-birthday
+        // Function to calculate the half-birthday
         function calculateHalfBirthday() {
-            const birthMonth = parseInt(document.getElementById("birthMonth").value);
             const birthDay = parseInt(document.getElementById("birthDay").value);
+            const birthMonth = parseInt(document.getElementById("birthMonth").value);
             const amPm = document.querySelector('input[name="amPm"]:checked').value;
 
-            const userBirthday = new Date(new Date().getFullYear(), birthMonth - 1, birthDay);
-            let halfBirthday = new Date(userBirthday);
-            halfBirthday.setDate(halfBirthday.getDate() + 365 / 2); // Add half a year
-
-            if (amPm === "PM") {
-                halfBirthday.setDate(halfBirthday.getDate() + 1); // Move to the next day if PM
+            if (!birthDay || !birthMonth) {
+                alert("Please enter a valid date.");
+                return;
             }
 
-            const userZodiac = getZodiacSign(userBirthday);
-            const halfBirthdayZodiac = getZodiacSign(halfBirthday);
-            const key = `${halfBirthdayZodiac}-${getZodiacNumber(userZodiac)}`;
+            const userBirthday = new Date(2024, birthMonth - 1, birthDay);
+            const halfBirthday = new Date(userBirthday);
+            halfBirthday.setDate(halfBirthday.getDate() + 182);
 
-            // Show loading message
-            showLoadingMessage();
+            if (amPm === "PM") {
+                halfBirthday.setDate(halfBirthday.getDate() + 1);
+            }
 
-            // Wait for 5 seconds to simulate "magical" calculation
-            setTimeout(function () {
-                displayHalfBirthdayResults(halfBirthday, key);
+            const userZodiac = getZodiacSign(birthDay, birthMonth);
+            const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
+            const zodiacKey = `${userZodiac}-${halfZodiac}`;
+
+            // Show loading messages
+            showLoadingMessages();
+
+            // Delay to display results
+            setTimeout(() => {
+                displayResults(halfBirthday, zodiacKey);
             }, 5000);
         }
 
-        // Display loading messages
-        function showLoadingMessage() {
-            const loadingMessages = [
+        // Function to display results
+        function displayResults(halfBirthday, zodiacKey) {
+            document.getElementById("halfBirthdayDate").textContent = halfBirthday.toDateString();
+            document.getElementById("zodiacMessage").textContent = zodiacMessages[zodiacKey] || "No specific message for this pairing.";
+            document.getElementById("resultContainer").style.display = "block";
+        }
+
+        // Function to show rotating loading messages
+        function showLoadingMessages() {
+            const messages = [
                 "Reconfiguring the star charts...",
-                "Consulting with the birthday fairies...",
-                "Aligning your celestial path...",
-                "Consulting ancient astrology texts...",
-                "Preparing your cosmic gift..."
+                "Consulting with birthday fairies...",
+                "Aligning celestial energies...",
+                "Decoding your zodiac destiny...",
+                "Cross-referencing the cosmic database..."
             ];
 
             let index = 0;
             const loadingDiv = document.getElementById("loadingMessages");
-            loadingDiv.innerHTML = loadingMessages[index];
+            loadingDiv.textContent = messages[index];
 
-            setInterval(function () {
-                index = (index + 1) % loadingMessages.length;
-                loadingDiv.innerHTML = loadingMessages[index];
-            }, 1000); // Change message every second
-        }
+            const interval = setInterval(() => {
+                index = (index + 1) % messages.length;
+                loadingDiv.textContent = messages[index];
+            }, 1000);
 
-        // Display the half-birthday results after calculation
-        function displayHalfBirthdayResults(halfBirthday, key) {
-            // Update the results on the page
-            document.getElementById("halfBirthdayDate").textContent = halfBirthday.toDateString();
-            document.getElementById("zodiacMessage").textContent = zodiacMessages[key] || "Zodiac message not found.";
-            document.getElementById("resultContainer").style.display = "block"; // Show the result
-        }
-
-        // Zodiac message lookup based on the key
-        const zodiacMessages = {
-            "Aries-1": "Aries and Taurus, opposites in many ways. Focus on patience, as you balance action with stability in your half-year reflection.",
-            "Taurus-2": "Taurus and Gemini, opposites in approach. Use this time to focus on adaptability and personal growth.",
-            "Gemini-3": "Gemini and Cancer, a time for introspection. Balance your social nature with deep, emotional growth during your reflection.",
-            "Cancer-4": "Cancer and Leo, two signs that build on emotional strength. This half-birthday brings balance to your inner needs and outward confidence.",
-            "Leo-5": "Leo and Virgo, two signs that work hard for the greater good. Reflect on how to use your energy for service to others.",
-            "Virgo-6": "Virgo and Libra, a time to find balance between personal improvement and relationships. Focus on harmonious growth.",
-            "Libra-7": "Libra and Scorpio, two signs that focus on deep connection. Reflect on how you balance your love for others with your own needs.",
-            "Scorpio-8": "Scorpio and Sagittarius, a time to focus on your truth and passions. Reflect on how you can achieve your deepest goals.",
-            "Sagittarius-9": "Sagittarius and Capricorn, two signs that focus on freedom and growth. Reflect on how to harness your adventurous spirit in practical ways.",
-            "Capricorn-10": "Capricorn and Aquarius, two signs that focus on long-term vision. Reflect on your ambitions and how you can make them a reality.",
-            "Aquarius-11": "Aquarius and Pisces, a time to reflect on your dreams. Focus on how to stay grounded while working towards your goals.",
-            "Pisces-12": "Pisces and Aries, a time to embrace your creative energies. Reflect on how you can transform your dreams into actions."
-        };
-
-        // Helper function to determine the zodiac sign number
-        function getZodiacNumber(zodiacSign) {
-            const zodiacOrder = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
-            return zodiacOrder.indexOf(zodiacSign) + 1;
+            setTimeout(() => clearInterval(interval), 5000); // Stop after 5 seconds
         }
     </script>
 </body>
