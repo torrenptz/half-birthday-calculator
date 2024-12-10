@@ -104,22 +104,22 @@
             userZodiac = getZodiacSign(birthDay, birthMonth);
 
             const zodiacHumor = {
-                Aries: "Always so bold, aren’t you? Charging ahead without hesitation!",
-                Taurus: "Steady and grounded, I bet you love a good feast.",
-                Gemini: "Chatty and curious! Probably asking questions already.",
-                Cancer: "Ah, a nurturer. The stars say you’re a great hugger.",
-                Leo: "Radiant and dramatic! Let me fetch your spotlight.",
-                Virgo: "Meticulous and practical, I see you already organizing this adventure.",
-                Libra: "Balanced and charming, I feel more harmonious just being near you.",
-                Scorpio: "Mysterious and intense… are you reading my mind right now?",
-                Sagittarius: "Adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
-                Capricorn: "Disciplined and ambitious! Are you running the cosmos now?",
-                Aquarius: "Visionary and unique. I bet you’re already thinking about the future.",
-                Pisces: "Dreamy and imaginative! Are you even listening, or are you off in a daydream?"
+                Aries: always so bold, aren’t you? Charging ahead without hesitation!,
+                Taurus: steady and grounded, I bet you love a good feast.,
+                Gemini: chatty and curious! Probably asking questions already.,
+                Cancer: such a nurturer. The stars say you’re a great hugger.,
+                Leo: radiant and dramatic! Let me fetch your spotlight.,
+                Virgo: meticulous and practical, I see you already organizing this adventure.,
+                Libra: balanced and charming, I feel more harmonious just being near you.,
+                Scorpio: mysterious and intense… are you reading my mind right now?,
+                Sagittarius: adventurous and free-spirited! Let me guess, you’re already planning your next journey.,
+                Capricorn: disciplined and ambitious! Are you running the cosmos now?,
+                Aquarius: visionary and unique. I bet you’re already thinking about the future.,
+                Pisces: dreamy and imaginative! Are you even listening, or are you off in a daydream?
             };
 
             document.getElementById("wizardContainer").innerHTML = `
-                <p>Ah yes! You are a ${userZodiac}! Of course, that explains the following: "${zodiacHumor[userZodiac]}"</p>
+                <p>Ah yes! You are a ${userZodiac}! Of course, I should have guessed, you are so "${zodiacHumor[userZodiac]}"</p>
                 <p>Now, are you ready to cast these stones into the Cavern of Cosmic Wonders?</p>
                 <button onclick="castStones()">Yes, tell me my half-birthday!</button>
             `;
