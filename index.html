@@ -22,8 +22,8 @@
 <body>
   <h1>Half Birthday Calculator</h1>
   <form id="calculatorForm">
-    <label for="dob">Enter your date of birth:</label><br>
-    <input type="date" id="dob" required><br><br>
+    <label for="dob">Enter your month and day of birth:</label><br>
+    <input type="text" id="dob" placeholder="MM-DD" pattern="\d{2}-\d{2}" required><br><br>
     <button type="submit">Calculate</button>
   </form>
   <p id="resultText"></p>
@@ -34,19 +34,36 @@
 
       form.addEventListener('submit', function (event) {
         event.preventDefault();
+
         const dobInput = document.getElementById('dob').value;
 
-        if (!dobInput) {
-          resultText.textContent = "Please enter a valid date.";
+        // Validate the input (MM-DD format)
+        const dobRegex = /^\d{2}-\d{2}$/;
+        if (!dobRegex.test(dobInput)) {
+          resultText.textContent = "Please enter a valid date in MM-DD format.";
           return;
         }
 
-        const dob = new Date(dobInput);
-        const halfBirthday = new Date(dob);
-        halfBirthday.setMonth(dob.getMonth() + 6);
+        // Extract month and day
+        const [month, day] = dobInput.split('-').map(Number);
 
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        resultText.textContent = `Your half-birthday is on: ${halfBirthday.toLocaleDateString('en-US', options)}`;
+        // Calculate half-birthday
+        let halfMonth = (month + 6) % 12 || 12; // Wrap around months
+        let halfDay = day;
+
+        // Handle cases where the day might not exist in the half-month
+        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        if (halfDay > daysInMonth[halfMonth - 1]) {
+          halfDay = daysInMonth[halfMonth - 1];
+        }
+
+        // Format and display the result
+        const monthNames = [
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+        const halfBirthdayFormatted = `${monthNames[halfMonth - 1]} ${halfDay}`;
+        resultText.textContent = `Your half-birthday is on: ${halfBirthdayFormatted}`;
       });
     });
   </script>
