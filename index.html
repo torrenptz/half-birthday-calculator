@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half Birthday Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    form {
+      margin: 20px 0;
+    }
+    #resultText {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Half Birthday Calculator</h1>
+  <form id="calculatorForm">
+    <label for="dob">Enter your date of birth:</label><br>
+    <input type="date" id="dob" required><br><br>
+    <button type="submit">Calculate</button>
+  </form>
+  <p id="resultText"></p>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('calculatorForm');
+      const resultText = document.getElementById('resultText');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const dobInput = document.getElementById('dob').value;
+
+        if (!dobInput) {
+          resultText.textContent = "Please enter a valid date.";
+          return;
+        }
+
+        const dob = new Date(dobInput);
+        const halfBirthday = new Date(dob);
+        halfBirthday.setMonth(dob.getMonth() + 6);
+
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        resultText.textContent = `Your half-birthday is on: ${halfBirthday.toLocaleDateString('en-US', options)}`;
+      });
+    });
+  </script>
+</body>
+</html>
