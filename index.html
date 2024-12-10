@@ -17,13 +17,18 @@
       font-weight: bold;
       margin-top: 20px;
     }
+    input {
+      width: 50px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1>Half Birthday Calculator</h1>
   <form id="calculatorForm">
-    <label for="dob">Enter your month and day of birth:</label><br>
-    <input type="text" id="dob" placeholder="MM-DD" pattern="\d{2}-\d{2}" required><br><br>
+    <label for="day">Enter your date of birth:</label><br><br>
+    <input type="number" id="day" placeholder="DD" min="1" max="31" required> /
+    <input type="number" id="month" placeholder="MM" min="1" max="12" required><br><br>
     <button type="submit">Calculate</button>
   </form>
   <p id="resultText"></p>
@@ -35,17 +40,18 @@
       form.addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const dobInput = document.getElementById('dob').value;
+        const dayInput = document.getElementById('day').value;
+        const monthInput = document.getElementById('month').value;
 
-        // Validate the input (MM-DD format)
-        const dobRegex = /^\d{2}-\d{2}$/;
-        if (!dobRegex.test(dobInput)) {
-          resultText.textContent = "Please enter a valid date in MM-DD format.";
+        // Convert inputs to numbers
+        const day = parseInt(dayInput, 10);
+        const month = parseInt(monthInput, 10);
+
+        // Validate the day and month inputs
+        if (!day || !month || day < 1 || day > 31 || month < 1 || month > 12) {
+          resultText.textContent = "Please enter a valid date.";
           return;
         }
-
-        // Extract month and day
-        const [month, day] = dobInput.split('-').map(Number);
 
         // Calculate half-birthday
         let halfMonth = (month + 6) % 12 || 12; // Wrap around months
@@ -62,7 +68,7 @@
           "January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"
         ];
-        const halfBirthdayFormatted = `${monthNames[halfMonth - 1]} ${halfDay}`;
+        const halfBirthdayFormatted = `${halfDay} ${monthNames[halfMonth - 1]}`;
         resultText.textContent = `Your half-birthday is on: ${halfBirthdayFormatted}`;
       });
     });
