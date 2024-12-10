@@ -1,112 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Half-Birthday Calculator</title>
-    <style>
-        /* Styling Section */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        form {
-            margin: 20px 0;
-        }
-        #resultContainer {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        #loadingMessages {
-            font-style: italic;
-            color: #888;
-            margin: 20px 0;
-        }
-        #halfBirthdayDate {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin: 15px 0;
-            display: block;
-        }
-        p {
-            max-width: 600px;
-            margin: 10px auto;
-            line-height: 1.6;
-        }
-    </style>
-</head>
 <body>
-    <!-- User Input Section -->
-    <h1>Half-Birthday Calculator</h1>
-    <form id="birthdayForm">
-        <label for="birthDay">Day of Birth (DD):</label>
-        <input type="number" id="birthDay" placeholder="DD" min="1" max="31" required><br>
-
-        <label for="birthMonth">Month of Birth (MM):</label>
-        <input type="number" id="birthMonth" placeholder="MM" min="1" max="12" required><br>
-
-        <label for="amPm">AM/PM of Birth:</label>
-        <input type="radio" name="amPm" value="AM" required> AM
-        <input type="radio" name="amPm" value="PM"> PM<br><br>
-
-        <button type="button" onclick="calculateHalfBirthday()">Calculate Half-Birthday</button>
-    </form>
-
-    <!-- Loading Message Section -->
-    <div id="loadingMessages"></div>
-
-    <!-- Result Section -->
-    <div id="resultContainer">
-        <p>Your half-birthday is: <span id="halfBirthdayDate"></span></p>
-        <p id="zodiacMessage"></p>
-        <p style="margin-top: 20px;" id="halfBirthdayReflection"></p>
+    <!-- Conversational Flow Section -->
+    <div id="wizardContainer">
+        <p id="wizardText">Welcome brave traveller, I have been waiting for you. No doubt you have come seeking the ancient magical knowledge of one's Celestial Equinox... or should I say half-birthday. Please weary traveller, take a seat and drink some tea.</p>
+        <button id="wizardButton" onclick="startJourney()">Take a seat and drink some tea</button>
     </div>
 
     <script>
-        /* Zodiac Data Section */
-        const zodiacSigns = [
-            { sign: "Capricorn", start: [12, 22], end: [1, 19] },
-            { sign: "Aquarius", start: [1, 20], end: [2, 18] },
-            { sign: "Pisces", start: [2, 19], end: [3, 20] },
-            { sign: "Aries", start: [3, 21], end: [4, 19] },
-            { sign: "Taurus", start: [4, 20], end: [5, 20] },
-            { sign: "Gemini", start: [5, 21], end: [6, 20] },
-            { sign: "Cancer", start: [6, 21], end: [7, 22] },
-            { sign: "Leo", start: [7, 23], end: [8, 22] },
-            { sign: "Virgo", start: [8, 23], end: [9, 22] },
-            { sign: "Libra", start: [9, 23], end: [10, 22] },
-            { sign: "Scorpio", start: [10, 23], end: [11, 21] },
-            { sign: "Sagittarius", start: [11, 22], end: [12, 21] }
-        ];
+        /* Conversational Flow Logic */
 
-      const zodiacMessages = {
-    "Aries-Libra": "Aries’ bold and fiery independence, ruled by the energetic planet Mars, contrasts with Libra’s harmonious and Venus-driven quest for balance. This half-birthday invites you to reflect on how your drive for action can benefit from diplomacy and collaboration. Embrace this moment to nurture relationships while honoring your own passionate pursuits.",
-    "Taurus-Scorpio": "Taurus’ grounded stability, guided by the sensual and comforting influence of Venus, contrasts with Scorpio’s transformative depth, ruled by the intense energies of Pluto and Mars. This half-birthday is an opportunity to balance your appreciation for life’s comforts with a willingness to embrace deep emotional growth. Let the synergy of these opposing forces help you transform.",
-    "Gemini-Sagittarius": "Gemini’s curious and quick-witted nature, ruled by Mercury, aligns with Sagittarius’ expansive vision and Jupiter’s wisdom. Your half-birthday is a time to reflect on how your pursuit of knowledge can inspire meaningful growth and adventures. Balance your intellectual agility with a sense of purpose and connection to the bigger picture.",
-    "Cancer-Capricorn": "Cancer’s nurturing and emotionally intuitive energy, guided by the Moon, contrasts with Capricorn’s disciplined and goal-oriented nature, shaped by Saturn’s structure. This half-birthday encourages you to balance emotional fulfillment with practical achievements. Reflect on how your care for others and your ambitions can coexist to create a more harmonious life.",
-    "Leo-Aquarius": "Leo’s radiant self-expression, ruled by the Sun, complements Aquarius’ visionary ideals, driven by the innovative energy of Uranus and Saturn’s structure. During this half-birthday, consider how your creativity can be channeled into actions that inspire collective progress. Align your inner light with meaningful contributions to your community.",
-    "Virgo-Pisces": "Virgo’s meticulous and analytical perspective, guided by Mercury, balances Pisces’ dreamy and intuitive energy, shaped by Neptune and Jupiter. This half-birthday invites you to reflect on how your practical skills can bring creative visions to life. Use this time to bridge the gap between the tangible and the imaginative.",
-    "Libra-Aries": "Libra’s quest for harmony, ruled by Venus, contrasts with Aries’ bold assertiveness, driven by Mars’ energetic influence. Your half-birthday is a moment to explore how seeking peace and fairness can coexist with decisive action. Reflect on how you can bring beauty and balance into even the most challenging situations.",
-    "Scorpio-Taurus": "Scorpio’s transformative and emotionally intense nature, ruled by Pluto and Mars, balances Taurus’ grounded stability, guided by Venus. This half-birthday invites you to appreciate the depth of your connections while nurturing trust and vulnerability. Use this time to deepen relationships and transform your emotional world.",
-    "Sagittarius-Gemini": "Sagittarius’ expansive and adventurous energy, ruled by Jupiter, contrasts with Gemini’s quick-thinking and curious nature, driven by Mercury. This half-birthday encourages you to explore new perspectives and celebrate intellectual growth. Reflect on how your connections and adventures can bring you closer to your goals.",
-    "Capricorn-Cancer": "Capricorn’s disciplined ambition, guided by Saturn, contrasts with Cancer’s emotionally intuitive energy, shaped by the Moon. Use this half-birthday to reflect on how your drive for success can coexist with a deep appreciation for loved ones. Balance your need for structure with moments of gratitude and care.",
-    "Aquarius-Leo": "Aquarius’ visionary thinking, driven by Uranus and Saturn, complements Leo’s vibrant and self-assured energy, ruled by the Sun. This half-birthday invites you to channel your innovative ideas into creative actions that uplift and inspire others. Reflect on how your leadership can shine a light on collective progress.",
-    "Pisces-Virgo": "Pisces’ intuitive and creative depth, shaped by Neptune and Jupiter, contrasts with Virgo’s precise and detail-oriented nature, guided by Mercury. Your half-birthday is a time to reflect on how your dreams can take shape in the real world. Use this milestone to weave together compassion, practicality, and inspiration."
-};
+        // Global variables to track user inputs
+        let userName = "";
+        let userZodiac = "";
 
+        // Function to start the journey
+        function startJourney() {
+            const wizardContainer = document.getElementById("wizardContainer");
+            wizardContainer.innerHTML = `
+                <p>Ah very good, now traveller, what is your name?</p>
+                <input type="text" id="userNameInput" placeholder="Enter your name">
+                <button onclick="setName()">Submit</button>
+            `;
+        }
 
-        const halfBirthdayReflection = 
-            "A half-birthday is more than just a date halfway through the year—it’s a time for introspection and balance. Unlike your actual birthday, which celebrates you, your half-birthday is a moment to pause and appreciate the people, opportunities, and growth in your life. It’s an invitation to reflect on how far you’ve come and to consider what you can give back to the world. Whether through small acts of kindness or larger gestures, use this milestone to bring joy, gratitude, and balance into your life and the lives of those around you.";
+        // Function to capture the user's name
+        function setName() {
+            const nameInput = document.getElementById("userNameInput").value.trim();
+            if (!nameInput) {
+                alert("Please enter your name, traveller.");
+                return;
+            }
+            userName = nameInput;
+            document.getElementById("wizardContainer").innerHTML = `
+                <p>Just as the stars foretold, how lovely to meet you, ${userName}! Now, let's get to business, the esoteric knowledge you seek. You have come this far. Now first, brave ${userName}, you must carve your birthdate into this magical stone.</p>
+                <input type="number" id="birthDay" placeholder="Day (DD)" min="1" max="31" required>
+                <input type="number" id="birthMonth" placeholder="Month (MM)" min="1" max="12" required>
+                <button onclick="setBirthdate()">Carve the stone</button>
+            `;
+        }
 
-        /* Helper Functions Section */
+        // Function to capture the user's birthdate and calculate zodiac
+        function setBirthdate() {
+            const birthDay = parseInt(document.getElementById("birthDay").value);
+            const birthMonth = parseInt(document.getElementById("birthMonth").value);
+
+            if (!birthDay || !birthMonth) {
+                alert("Please carve a valid birthdate, traveller.");
+                return;
+            }
+
+            userZodiac = getZodiacSign(birthDay, birthMonth);
+
+            const zodiacHumor = {
+                Aries: "Always so bold, aren’t you? Charging ahead without hesitation!",
+                Taurus: "Steady and grounded, I bet you love a good feast.",
+                Gemini: "Chatty and curious! Probably asking questions already.",
+                Cancer: "Ah, a nurturer. The stars say you’re a great hugger.",
+                Leo: "Radiant and dramatic! Let me fetch your spotlight.",
+                Virgo: "Meticulous and practical, I see you already organizing this adventure.",
+                Libra: "Balanced and charming, I feel more harmonious just being near you.",
+                Scorpio: "Mysterious and intense… are you reading my mind right now?",
+                Sagittarius: "Adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
+                Capricorn: "Disciplined and ambitious! Are you running the cosmos now?",
+                Aquarius: "Visionary and unique. I bet you’re already thinking about the future.",
+                Pisces: "Dreamy and imaginative! Are you even listening, or are you off in a daydream?"
+            };
+
+            document.getElementById("wizardContainer").innerHTML = `
+                <p>Ah yes! You are a ${userZodiac}! Of course, that explains the following: "${zodiacHumor[userZodiac]}"</p>
+                <p>Now, are you ready to cast these stones into the Cavern of Cosmic Wonders?</p>
+                <button onclick="castStones()">Yes, tell me my half-birthday!</button>
+            `;
+        }
+
+        // Function to simulate casting stones and display results
+        function castStones() {
+            const wizardContainer = document.getElementById("wizardContainer");
+
+            const celestialMessages = [
+                "Reconfiguring the star charts...",
+                "Consulting with the celestial oracle...",
+                "Illuminating astral pathways...",
+                "Charting the zodiac wheel...",
+                "Whispering to ancient constellations...",
+                "Synchronizing planetary alignments...",
+                "Cross-referencing cosmic archives...",
+                "Balancing universal energies..."
+            ];
+
+            let index = 0;
+            wizardContainer.innerHTML = `<p id="loadingMessage">${celestialMessages[index]}</p>`;
+            const interval = setInterval(() => {
+                index = Math.floor(Math.random() * celestialMessages.length);
+                document.getElementById("loadingMessage").textContent = celestialMessages[index];
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                showHalfBirthdayResults();
+            }, 5000);
+        }
+
+        // Function to show half-birthday results
+        function showHalfBirthdayResults() {
+            const birthDay = parseInt(document.getElementById("birthDay").value);
+            const birthMonth = parseInt(document.getElementById("birthMonth").value);
+            const halfBirthday = new Date(2024, birthMonth - 1, birthDay);
+            halfBirthday.setDate(halfBirthday.getDate() + 182);
+
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const halfMonth = monthNames[halfBirthday.getMonth()];
+            const halfDay = halfBirthday.getDate();
+
+            const userZodiac = getZodiacSign(birthDay, birthMonth);
+            const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
+            const zodiacKey = `${userZodiac}-${halfZodiac}`;
+
+            const halfBirthdayMessage = zodiacMessages[zodiacKey] || "No specific message for this pairing.";
+
+            document.getElementById("wizardContainer").innerHTML = `
+                <p>Very well, ${userName}. The stars have spoken!</p>
+                <p>Your half-birthday is: <strong>${halfMonth} ${halfDay}</strong></p>
+                <p>${halfBirthdayMessage}</p>
+                <p>${halfBirthdayReflection}</p>
+            `;
+        }
+
+        /* Zodiac Calculation Helper */
         function getZodiacSign(day, month) {
             for (let sign of zodiacSigns) {
                 if (
@@ -118,88 +140,5 @@
             }
             return "Capricorn"; // Default fallback
         }
-
-        /* Main Calculation Section */
-        function calculateHalfBirthday() {
-            const birthDay = parseInt(document.getElementById("birthDay").value);
-            const birthMonth = parseInt(document.getElementById("birthMonth").value);
-            const amPm = document.querySelector('input[name="amPm"]:checked').value;
-
-            if (!birthDay || !birthMonth) {
-                alert("Please enter a valid date.");
-                return;
-            }
-
-            const userBirthday = new Date(2024, birthMonth - 1, birthDay);
-            const halfBirthday = new Date(userBirthday);
-            halfBirthday.setDate(halfBirthday.getDate() + 182);
-
-            if (amPm === "PM") {
-                halfBirthday.setDate(halfBirthday.getDate() + 1);
-            }
-
-            const userZodiac = getZodiacSign(birthDay, birthMonth);
-            const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
-            const zodiacKey = `${userZodiac}-${halfZodiac}`;
-
-            showLoadingMessages();
-
-            setTimeout(() => {
-                displayResults(halfBirthday, zodiacKey);
-            }, 5000);
-        }
-
-        /* Result Display Section */
-        function displayResults(halfBirthday, zodiacKey) {
-            const monthNames = [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
-
-            document.getElementById("halfBirthdayDate").textContent = 
-                `${monthNames[halfBirthday.getMonth()]} ${halfBirthday.getDate()}`;
-            document.getElementById("zodiacMessage").textContent = zodiacMessages[zodiacKey] || 
-                "No specific message for this pairing.";
-            document.getElementById("halfBirthdayReflection").textContent = halfBirthdayReflection;
-            document.getElementById("loadingMessages").textContent = ""; // Clear loading messages
-            document.getElementById("resultContainer").style.display = "block";
-        }
-
-        /* Loading Message Section */
-function showLoadingMessages() {
-    const messages = [
-        "Reconfiguring the star charts...",
-        "Consulting with birthday fairies...",
-        "Aligning celestial energies...",
-        "Decoding your zodiac destiny...",
-        "Cross-referencing the cosmic database...",
-        "Calibrating planetary orbits...",
-        "Communing with the constellations...",
-        "Charting the astral map...",
-        "Tuning the cosmic vibrations...",
-        "Asking the Moon for advice...",
-        "Realigning the galaxy grid...",
-        "Whispering to the Milky Way...",
-        "Synchronizing star patterns...",
-        "Measuring the light of distant suns...",
-        "Harmonizing with the zodiac spheres...",
-        "Tracking the paths of celestial bodies...",
-        "Consulting with cosmic gatekeepers...",
-        "Balancing universal energies...",
-        "Illuminating cosmic truths...",
-        "Mapping the cosmic calendar..."
-    ];
-
-    const loadingDiv = document.getElementById("loadingMessages");
-
-    const interval = setInterval(() => {
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        loadingDiv.textContent = randomMessage;
-    }, 1000);
-
-    setTimeout(() => clearInterval(interval), 5000); // Stop after 5 seconds
-}
-
     </script>
 </body>
-</html>
