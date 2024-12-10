@@ -1,18 +1,18 @@
 <body>
-    <!-- Conversational Flow Section -->
+    <!-- Wizard Flow Container -->
     <div id="wizardContainer">
         <p id="wizardText">Welcome brave traveller, I have been waiting for you. No doubt you have come seeking the ancient magical knowledge of one's Celestial Equinox... or should I say half-birthday. Please weary traveller, take a seat and drink some tea.</p>
         <button id="wizardButton" onclick="startJourney()">Take a seat and drink some tea</button>
     </div>
 
     <script>
-        /* Conversational Flow Logic */
-
-        // Global variables to track user inputs
+        /* Global Variables */
         let userName = "";
         let userZodiac = "";
 
-        // Function to start the journey
+        /* Conversational Flow Functions */
+
+        // Start the journey
         function startJourney() {
             const wizardContainer = document.getElementById("wizardContainer");
             wizardContainer.innerHTML = `
@@ -22,7 +22,7 @@
             `;
         }
 
-        // Function to capture the user's name
+        // Capture the user's name
         function setName() {
             const nameInput = document.getElementById("userNameInput").value.trim();
             if (!nameInput) {
@@ -38,12 +38,12 @@
             `;
         }
 
-        // Function to capture the user's birthdate and calculate zodiac
+        // Capture the user's birthdate and calculate zodiac
         function setBirthdate() {
             const birthDay = parseInt(document.getElementById("birthDay").value);
             const birthMonth = parseInt(document.getElementById("birthMonth").value);
 
-            if (!birthDay || !birthMonth) {
+            if (!birthDay || !birthMonth || birthDay > 31 || birthMonth > 12) {
                 alert("Please carve a valid birthdate, traveller.");
                 return;
             }
@@ -72,10 +72,8 @@
             `;
         }
 
-        // Function to simulate casting stones and display results
+        // Simulate casting stones and reveal results
         function castStones() {
-            const wizardContainer = document.getElementById("wizardContainer");
-
             const celestialMessages = [
                 "Reconfiguring the star charts...",
                 "Consulting with the celestial oracle...",
@@ -88,7 +86,7 @@
             ];
 
             let index = 0;
-            wizardContainer.innerHTML = `<p id="loadingMessage">${celestialMessages[index]}</p>`;
+            document.getElementById("wizardContainer").innerHTML = `<p id="loadingMessage">${celestialMessages[index]}</p>`;
             const interval = setInterval(() => {
                 index = Math.floor(Math.random() * celestialMessages.length);
                 document.getElementById("loadingMessage").textContent = celestialMessages[index];
@@ -100,7 +98,7 @@
             }, 5000);
         }
 
-        // Function to show half-birthday results
+        // Show half-birthday results
         function showHalfBirthdayResults() {
             const birthDay = parseInt(document.getElementById("birthDay").value);
             const birthMonth = parseInt(document.getElementById("birthMonth").value);
@@ -114,7 +112,6 @@
             const halfMonth = monthNames[halfBirthday.getMonth()];
             const halfDay = halfBirthday.getDate();
 
-            const userZodiac = getZodiacSign(birthDay, birthMonth);
             const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
             const zodiacKey = `${userZodiac}-${halfZodiac}`;
 
@@ -128,7 +125,9 @@
             `;
         }
 
-        /* Zodiac Calculation Helper */
+        /* Helper Functions */
+
+        // Determine zodiac sign
         function getZodiacSign(day, month) {
             for (let sign of zodiacSigns) {
                 if (
@@ -140,5 +139,29 @@
             }
             return "Capricorn"; // Default fallback
         }
+
+        /* Zodiac Data Section */
+        const zodiacSigns = [
+            { sign: "Capricorn", start: [12, 22], end: [1, 19] },
+            { sign: "Aquarius", start: [1, 20], end: [2, 18] },
+            { sign: "Pisces", start: [2, 19], end: [3, 20] },
+            { sign: "Aries", start: [3, 21], end: [4, 19] },
+            { sign: "Taurus", start: [4, 20], end: [5, 20] },
+            { sign: "Gemini", start: [5, 21], end: [6, 20] },
+            { sign: "Cancer", start: [6, 21], end: [7, 22] },
+            { sign: "Leo", start: [7, 23], end: [8, 22] },
+            { sign: "Virgo", start: [8, 23], end: [9, 22] },
+            { sign: "Libra", start: [9, 23], end: [10, 22] },
+            { sign: "Scorpio", start: [10, 23], end: [11, 21] },
+            { sign: "Sagittarius", start: [11, 22], end: [12, 21] }
+        ];
+
+        const zodiacMessages = {
+            "Aries-Libra": "Message for Aries-Libra...",
+            // Add the other messages here
+        };
+
+        const halfBirthdayReflection = 
+            "A half-birthday is more than just a date halfway through the year—it’s a time for introspection and balance. Unlike your actual birthday, which celebrates you, your half-birthday is a moment to pause and appreciate the people, opportunities, and growth in your life. It’s an invitation to reflect on how far you’ve come and to consider what you can give back to the world.";
     </script>
 </body>
