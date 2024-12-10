@@ -17,9 +17,13 @@
       font-weight: bold;
       margin-top: 20px;
     }
-    input {
-      width: 50px;
-      text-align: center;
+    #loadingMessage {
+      font-style: italic;
+      color: #888;
+      margin-top: 20px;
+    }
+    input, select, button {
+      margin: 5px;
     }
   </style>
 </head>
@@ -36,11 +40,21 @@
     </select><br><br>
     <button type="submit">Calculate</button>
   </form>
+  <p id="loadingMessage"></p>
   <p id="resultText"></p>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const form = document.getElementById('calculatorForm');
+      const loadingMessage = document.getElementById('loadingMessage');
       const resultText = document.getElementById('resultText');
+
+      const loadingMessages = [
+        "Reconfiguring the star charts...",
+        "Consulting with the birthday fairies...",
+        "Dusting off the cosmic calendar...",
+        "Calculating with quantum cupcakes...",
+        "Syncing with the celestial mainframe..."
+      ];
 
       form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -49,31 +63,46 @@
         const monthInput = document.getElementById('month').value;
         const ampmInput = document.getElementById('ampm').value;
 
-        // Convert inputs to numbers
+        // Validate inputs
         const day = parseInt(dayInput, 10);
         const month = parseInt(monthInput, 10);
-
-        // Validate inputs
         if (!day || !month || day < 1 || day > 31 || month < 1 || month > 12) {
           resultText.textContent = "Please enter a valid date.";
           return;
         }
 
-        // Initialize the birthdate as a JavaScript Date object
-        const birthDate = new Date(2024, month - 1, day); // Use any common year
-        const halfDays = 182 + (ampmInput === "PM" ? 1 : 0); // Add 1 day if born in PM
-        const halfBirthday = new Date(birthDate.getTime() + halfDays * 24 * 60 * 60 * 1000);
+        // Clear previous results
+        resultText.textContent = "";
+        loadingMessage.textContent = "";
 
-        // Format the result
-        const monthNames = [
-          "January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-        ];
-        const halfDay = halfBirthday.getDate();
-        const halfMonth = monthNames[halfBirthday.getMonth()];
+        // Start loading messages
+        let currentMessageIndex = 0;
+        const interval = setInterval(() => {
+          loadingMessage.textContent = loadingMessages[currentMessageIndex];
+          currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
+        }, 1000);
 
-        // Display the half-birthday
-        resultText.textContent = `Your half-birthday is on: ${halfDay} ${halfMonth}`;
+        // Calculate half-birthday after 5 seconds
+        setTimeout(() => {
+          clearInterval(interval); // Stop the loading messages
+
+          // Calculate half-birthday
+          const birthDate = new Date(2024, month - 1, day); // Use any common year
+          const halfDays = 182 + (ampmInput === "PM" ? 1 : 0); // Add 1 day if born in PM
+          const halfBirthday = new Date(birthDate.getTime() + halfDays * 24 * 60 * 60 * 1000);
+
+          // Format the result
+          const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+          const halfDay = halfBirthday.getDate();
+          const halfMonth = monthNames[halfBirthday.getMonth()];
+
+          // Display the half-birthday
+          loadingMessage.textContent = ""; // Clear the loading message
+          resultText.textContent = `Your half-birthday is on: ${halfDay} ${halfMonth}`;
+        }, 5000);
       });
     });
   </script>
