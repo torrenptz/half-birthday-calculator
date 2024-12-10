@@ -29,6 +29,11 @@
     <label for="day">Enter your date of birth:</label><br><br>
     <input type="number" id="day" placeholder="DD" min="1" max="31" required> /
     <input type="number" id="month" placeholder="MM" min="1" max="12" required><br><br>
+    <label for="ampm">Were you born in the AM or PM?</label><br>
+    <select id="ampm" required>
+      <option value="AM">AM</option>
+      <option value="PM">PM</option>
+    </select><br><br>
     <button type="submit">Calculate</button>
   </form>
   <p id="resultText"></p>
@@ -42,34 +47,33 @@
 
         const dayInput = document.getElementById('day').value;
         const monthInput = document.getElementById('month').value;
+        const ampmInput = document.getElementById('ampm').value;
 
         // Convert inputs to numbers
         const day = parseInt(dayInput, 10);
         const month = parseInt(monthInput, 10);
 
-        // Validate the day and month inputs
+        // Validate inputs
         if (!day || !month || day < 1 || day > 31 || month < 1 || month > 12) {
           resultText.textContent = "Please enter a valid date.";
           return;
         }
 
-        // Calculate half-birthday
-        let halfMonth = (month + 6) % 12 || 12; // Wrap around months
-        let halfDay = day;
+        // Initialize the birthdate as a JavaScript Date object
+        const birthDate = new Date(2024, month - 1, day); // Use any common year
+        const halfDays = 182 + (ampmInput === "PM" ? 1 : 0); // Add 1 day if born in PM
+        const halfBirthday = new Date(birthDate.getTime() + halfDays * 24 * 60 * 60 * 1000);
 
-        // Handle cases where the day might not exist in the half-month
-        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        if (halfDay > daysInMonth[halfMonth - 1]) {
-          halfDay = daysInMonth[halfMonth - 1];
-        }
-
-        // Format and display the result
+        // Format the result
         const monthNames = [
           "January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"
         ];
-        const halfBirthdayFormatted = `${halfDay} ${monthNames[halfMonth - 1]}`;
-        resultText.textContent = `Your half-birthday is on: ${halfBirthdayFormatted}`;
+        const halfDay = halfBirthday.getDate();
+        const halfMonth = monthNames[halfBirthday.getMonth()];
+
+        // Display the half-birthday
+        resultText.textContent = `Your half-birthday is on: ${halfDay} ${halfMonth}`;
       });
     });
   </script>
