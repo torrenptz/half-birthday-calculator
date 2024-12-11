@@ -118,7 +118,7 @@
             `;
         }
 
-        function castStones() {
+function castStones() {
     const celestialMessages = [
         "Reconfiguring the star charts...",
         "Consulting with the celestial oracle...",
@@ -131,44 +131,57 @@
     ];
 
     let index = 0;
-    document.getElementById("wizardContainer").innerHTML = `<p id="loadingMessage">${celestialMessages[index]}</p>`;
+    const loadingContainer = document.getElementById("wizardContainer");
+    loadingContainer.innerHTML = `<p id="loadingMessage">${celestialMessages[index]}</p>`;
+
+    // Start cycling through celestial messages
     const interval = setInterval(() => {
         index = Math.floor(Math.random() * celestialMessages.length);
         document.getElementById("loadingMessage").textContent = celestialMessages[index];
     }, 1000);
 
+    // Stop cycling and display results after 5 seconds
     setTimeout(() => {
-        clearInterval(interval); // Ensure this is called to stop updates
-        showHalfBirthdayResults(); // Proceed to show the results
+        clearInterval(interval); // Ensure the interval is cleared
+        showHalfBirthdayResults(); // Proceed to the results
     }, 5000);
 }
 
 
-        function showHalfBirthdayResults() {
-            const birthDay = parseInt(document.getElementById("birthDay").value);
-            const birthMonth = parseInt(document.getElementById("birthMonth").value);
-            const halfBirthday = new Date(2024, birthMonth - 1, birthDay);
-            halfBirthday.setDate(halfBirthday.getDate() + 182);
 
-            const monthNames = [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
-            const halfMonth = monthNames[halfBirthday.getMonth()];
-            const halfDay = halfBirthday.getDate();
+       function showHalfBirthdayResults() {
+    const birthDay = parseInt(document.getElementById("birthDay")?.value);
+    const birthMonth = parseInt(document.getElementById("birthMonth")?.value);
 
-            const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
-            const zodiacKey = `${userZodiac}-${halfZodiac}`;
+    if (!birthDay || !birthMonth) {
+        document.getElementById("wizardContainer").innerHTML = `
+            <p>Error: Birthdate data is missing. Please try again.</p>
+        `;
+        return;
+    }
 
-            const halfBirthdayMessage = zodiacMessages[zodiacKey] || "No specific message for this pairing.";
+    const halfBirthday = new Date(2024, birthMonth - 1, birthDay);
+    halfBirthday.setDate(halfBirthday.getDate() + 182);
 
-            document.getElementById("wizardContainer").innerHTML = `
-                <p>Very well, ${userName}. The stars have spoken!</p>
-                <p>Your half-birthday is: <strong>${halfMonth} ${halfDay}</strong></p>
-                <p>${halfBirthdayMessage}</p>
-                <p>${halfBirthdayReflection}</p>
-            `;
-        }
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const halfMonth = monthNames[halfBirthday.getMonth()];
+    const halfDay = halfBirthday.getDate();
+
+    const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
+    const zodiacKey = `${userZodiac}-${halfZodiac}`;
+    const halfBirthdayMessage = zodiacMessages[zodiacKey] || "No specific message for this pairing.";
+
+    document.getElementById("wizardContainer").innerHTML = `
+        <p>Very well, ${userName}. The stars have spoken!</p>
+        <p>Your half-birthday is: <strong>${halfMonth} ${halfDay}</strong></p>
+        <p>${halfBirthdayMessage}</p>
+        <p>${halfBirthdayReflection}</p>
+    `;
+}
+
 
         function getZodiacSign(day, month) {
             for (let sign of zodiacSigns) {
