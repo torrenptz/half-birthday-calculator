@@ -85,31 +85,40 @@
             `;
         }
 
-        function setBirthdate() {
-            const birthDay = parseInt(document.getElementById("birthDay").value);
-            const birthMonth = parseInt(document.getElementById("birthMonth").value);
+       function setBirthdate() {
+    const birthDay = parseInt(document.getElementById("birthDay").value);
+    const birthMonth = parseInt(document.getElementById("birthMonth").value);
 
-            if (!birthDay || !birthMonth || birthDay > 31 || birthMonth > 12) {
-                alert("Please carve a valid birthdate, traveller.");
-                return;
-            }
+    if (!birthDay || !birthMonth || birthDay > 31 || birthMonth > 12) {
+        alert("Please carve a valid birthdate, traveller.");
+        return;
+    }
 
-            userZodiac = getZodiacSign(birthDay, birthMonth);
+    userZodiac = getZodiacSign(birthDay, birthMonth);
 
-            const zodiacHumor = {
-                Aries: "bold, aren’t you? Charging ahead without hesitation!",
-                Taurus: "steady and grounded, I bet you love a good feast.",
-                Gemini: "chatty and curious! Probably asking questions already.",
-                Cancer: "nurturering. The stars say you’re a great hugger.",
-                Leo: "radiant and dramatic! Let me fetch your spotlight.",
-                Virgo: "meticulous and practical, I see you already organizing this adventure.",
-                Libra: "balanced and charming, I feel more harmonious just being near you.",
-                Scorpio: "mysterious and intense… are you reading my mind right now?",
-                Sagittarius: "adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
-                Capricorn: "disciplined and ambitious! Are you running the cosmos now?",
-                Aquarius: "visionary and unique. I bet you’re already thinking about the future.",
-                Pisces: "dreamy and imaginative! Are you even listening, or are you off in a daydream?"
-            };
+    const zodiacHumor = {
+        Aries: "so bold, aren’t you? Charging ahead without hesitation!",
+        Taurus: "so steady and grounded, I bet you love a good feast.",
+        Gemini: "so chatty and curious! Probably asking questions already.",
+        Cancer: "such a nurturer. The stars say you’re a great hugger.",
+        Leo: "so radiant and dramatic! Let me fetch your spotlight.",
+        Virgo: "so meticulous and practical, I see you already organizing this adventure.",
+        Libra: "so balanced and charming, I feel more harmonious just being near you.",
+        Scorpio: "so mysterious and intense… are you reading my mind right now?",
+        Sagittarius: "so adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
+        Capricorn: "so disciplined and ambitious! Are you running the cosmos now?",
+        Aquarius: "so visionary and unique. I bet you’re already thinking about the future.",
+        Pisces: "so dreamy and imaginative! Are you even listening, or are you off in a daydream?"
+    };
+
+    document.getElementById("wizardContainer").innerHTML = `
+        <p>Ah yes! You are ${userZodiac}! Of course, I should have guessed, you are ${zodiacHumor[userZodiac]}</p>
+        <p>Now, are you ready to cast these stones into the Cavern of Cosmic Wonders?</p>
+        <button onclick="castStones(${birthDay}, ${birthMonth})">Cast Stones</button>
+    `;
+}
+
+
 
             document.getElementById("wizardContainer").innerHTML = `
                 <p>Ah yes! You are ${userZodiac}! Of course, I should have guessed, you are so ${zodiacHumor[userZodiac]}</p>
@@ -118,7 +127,7 @@
             `;
         }
 
-function castStones() {
+function castStones(birthDay, birthMonth) {
     const celestialMessages = [
         "Reconfiguring the star charts...",
         "Consulting with the celestial oracle...",
@@ -143,23 +152,14 @@ function castStones() {
     // Stop cycling and display results after 5 seconds
     setTimeout(() => {
         clearInterval(interval); // Ensure the interval is cleared
-        showHalfBirthdayResults(); // Proceed to the results
+        showHalfBirthdayResults(birthDay, birthMonth); // Pass the birthdate to the results function
     }, 5000);
 }
 
 
 
-       function showHalfBirthdayResults() {
-    const birthDay = parseInt(document.getElementById("birthDay")?.value);
-    const birthMonth = parseInt(document.getElementById("birthMonth")?.value);
 
-    if (!birthDay || !birthMonth) {
-        document.getElementById("wizardContainer").innerHTML = `
-            <p>Error: Birthdate data is missing. Please try again.</p>
-        `;
-        return;
-    }
-
+       function showHalfBirthdayResults(birthDay, birthMonth) {
     const halfBirthday = new Date(2024, birthMonth - 1, birthDay);
     halfBirthday.setDate(halfBirthday.getDate() + 182);
 
@@ -181,6 +181,7 @@ function castStones() {
         <p>${halfBirthdayReflection}</p>
     `;
 }
+
 
 
         function getZodiacSign(day, month) {
