@@ -1,4 +1,4 @@
- <!DOCTYPE html> 
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -85,98 +85,193 @@
             `;
         }
 
-       function setBirthdate() {
-    const birthDay = parseInt(document.getElementById("birthDay").value);
-    const birthMonth = parseInt(document.getElementById("birthMonth").value);
+        const famousBirthdays = {
+            "1-1": "Paul Revere (American silversmith and patriot)",
+            "1-2": "Isaac Asimov (Science fiction author)",
+            "1-3": "J.R.R. Tolkien (Author, The Lord of the Rings)",
+            "1-4": "Louis Braille (Inventor of Braille)",
+            "1-5": "Diane Keaton (Actress)",
+            "1-6": "Rowan Atkinson (Actor, Mr. Bean)",
+            "1-7": "Nicolas Cage (Actor)",
+            "1-8": "Stephen Hawking (Physicist)",
+            "1-9": "Kate Middleton (Duchess of Cambridge)",
+            "1-10": "Rod Stewart (Singer)"
+            // Additional entries should follow...
+        };
 
-    if (!birthDay || !birthMonth || birthDay > 31 || birthMonth > 12) {
-        alert("Please carve a valid birthdate, traveller.");
-        return;
-    }
+        function setBirthdate() {
+            const birthDay = parseInt(document.getElementById("birthDay").value);
+            const birthMonth = parseInt(document.getElementById("birthMonth").value);
 
-    userZodiac = getZodiacSign(birthDay, birthMonth);
+            if (!birthDay || !birthMonth || birthDay > 31 || birthMonth > 12) {
+                alert("Please carve a valid birthdate, traveller.");
+                return;
+            }
 
-    const zodiacHumor = {
-        Aries: "so bold, aren’t you? Charging ahead without hesitation!",
-        Taurus: "so steady and grounded, I bet you love a good feast.",
-        Gemini: "so chatty and curious! Probably asking questions already.",
-        Cancer: "such a nurturer. The stars say you’re a great hugger.",
-        Leo: "so radiant and dramatic! Let me fetch your spotlight.",
-        Virgo: "so meticulous and practical, I see you already organizing this adventure.",
-        Libra: "so balanced and charming, I feel more harmonious just being near you.",
-        Scorpio: "so mysterious and intense… are you reading my mind right now?",
-        Sagittarius: "so adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
-        Capricorn: "so disciplined and ambitious! Are you running the cosmos now?",
-        Aquarius: "so visionary and unique. I bet you’re already thinking about the future.",
-        Pisces: "so dreamy and imaginative! Are you even listening, or are you off in a daydream?"
-    };
+            userZodiac = getZodiacSign(birthDay, birthMonth);
 
-    document.getElementById("wizardContainer").innerHTML = `
-        <p>Ah yes! You are ${userZodiac}! Of course, I should have guessed, you are ${zodiacHumor[userZodiac]}</p>
-        <p>Now, are you ready to cast these stones into the Cavern of Cosmic Wonders?</p>
-        <button onclick="castStones(${birthDay}, ${birthMonth})">Cast Stones</button>
-    `;
-}
+            const zodiacHumor = {
+                Aries: "so bold, aren’t you? Charging ahead without hesitation!",
+                Taurus: "so steady and grounded, I bet you love a good feast.",
+                Gemini: "so chatty and curious! Probably asking questions already.",
+                Cancer: "such a nurturer. The stars say you’re a great hugger.",
+                Leo: "so radiant and dramatic! Let me fetch your spotlight.",
+                Virgo: "so meticulous and practical, I see you already organizing this adventure.",
+                Libra: "so balanced and charming, I feel more harmonious just being near you.",
+                Scorpio: "so mysterious and intense… are you reading my mind right now?",
+                Sagittarius: "so adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
+                Capricorn: "so disciplined and ambitious! Are you running the cosmos now?",
+                Aquarius: "so visionary and unique. I bet you’re already thinking about the future.",
+                Pisces: "so dreamy and imaginative! Are you even listening, or are you off in a daydream?"
+            };
 
+            const formattedDate = `${birthMonth}-${birthDay}`;
+            const famousPerson = famousBirthdays[formattedDate] || "someone equally as unique and special as you!";
 
-function castStones(birthDay, birthMonth) {
-    const celestialMessages = [
-        "Reconfiguring the star charts...",
-        "Consulting with the celestial oracle...",
-        "Illuminating astral pathways...",
-        "Charting the zodiac wheel...",
-        "Whispering to ancient constellations...",
-        "Synchronizing planetary alignments...",
-        "Cross-referencing cosmic archives...",
-        "Balancing universal energies..."
-    ];
+            document.getElementById("wizardContainer").innerHTML = `
+                <p>Ah yes! You are ${userZodiac}! Of course, I should have guessed, you are ${zodiacHumor[userZodiac]}</p>
+                <p>Did you know? You share your birthday with ${famousPerson}!</p>
+                <p>Now, are you ready to cast these stones into the Cavern of Cosmic Wonders?</p>
+                <button onclick="castStones(${birthDay}, ${birthMonth})">Cast Stones</button>
+            `;
+        }
 
-    let index = 0;
-    const loadingContainer = document.getElementById("wizardContainer");
-    loadingContainer.innerHTML = `<p id="loadingMessage">${celestialMessages[index]}</p>`;
+        function castStones(birthDay, birthMonth) {
+            const celestialMessages = [
+                "Reconfiguring the star charts...",
+                "Consulting with the celestial oracle...",
+                "Illuminating astral pathways...",
+                "Charting the zodiac wheel...",
+                "Whispering to ancient constellations...",
+                "Synchronizing planetary alignments...",
+                "Cross-referencing cosmic archives...",
+                "Balancing universal energies..."
+            ];
 
-    // Start cycling through celestial messages
-    const interval = setInterval(() => {
-        index = Math.floor(Math.random() * celestialMessages.length);
-        document.getElementById("loadingMessage").textContent = celestialMessages[index];
-    }, 1000);
+            let index = 0;
+            const loadingContainer = document.getElementById("wizardContainer");
+            loadingContainer.innerHTML = `<p id="loadingMessage">${celestialMessages[index]}</p>`;
 
-    // Stop cycling and display results after 5 seconds
-    setTimeout(() => {
-        clearInterval(interval); // Ensure the interval is cleared
-        showHalfBirthdayResults(birthDay, birthMonth); // Pass the birthdate to the results function
-    }, 5000);
-}
+            const interval = setInterval(() => {
+                index = Math.floor(Math.random() * celestialMessages.length);
+                document.getElementById("loadingMessage").textContent = celestialMessages[index];
+            }, 1000);
 
+            setTimeout(() => {
+                clearInterval(interval);
+                showHalfBirthdayResults(birthDay, birthMonth);
+            }, 5000);
+        }
 
+        function showHalfBirthdayResults(birthDay, birthMonth) {
+            const halfBirthday = new Date(2024, birthMonth - 1, birthDay);
+            halfBirthday.setDate(halfBirthday.getDate() + 182);
 
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const halfMonth = monthNames[halfBirthday.getMonth()];
+            const halfDay = halfBirthday.getDate();
 
-       function showHalfBirthdayResults(birthDay, birthMonth) {
-    const halfBirthday = new Date(2024, birthMonth - 1, birthDay);
-    halfBirthday.setDate(halfBirthday.getDate() + 182);
+            const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
+            const zodiacKey = `${userZodiac}-${halfZodiac}`;
+            const zodiacMessages = {
+                "Aries-Libra": "Aries’ bold and fiery independence, ruled by the energetic planet Mars, contrasts with Libra’s harmonious and Venus-driven quest for balance. This Half Birthday invites you to reflect on how your drive for action can benefit from diplomacy and collaboration. Embrace this moment to nurture relationships while honoring your own passionate pursuits.",
+                "Taurus-Scorpio": "Taurus’ grounded stability, guided by the sensual and comforting influence of Venus, contrasts with Scorpio’s transformative depth, ruled by the intense energies of Pluto and Mars. This Half Birthday is an opportunity to balance your appreciation for life’s comforts with a willingness to embrace deep emotional growth. Let the synergy of these opposing forces help you transform.",
+                "Gemini-Sagittarius": "Gemini’s curious and quick-witted nature, ruled by Mercury, aligns with Sagittarius’ expansive vision and Jupiter’s wisdom. Your Half Birthday is a time to reflect on how your pursuit of knowledge can inspire meaningful growth and adventures. Balance your intellectual agility with a sense of purpose and connection to the bigger picture.",
+                "Cancer-Capricorn": "Cancer’s nurturing and emotionally intuitive energy, guided by the Moon, contrasts with Capricorn’s disciplined and goal-oriented nature, shaped by Saturn’s structure. This Half Birthday encourages you to balance emotional fulfillment with practical achievements. Reflect on how your care for others and your ambitions can coexist to create a more harmonious life.",
+                "Leo-Aquarius": "Leo’s radiant self-expression, ruled by the Sun, complements Aquarius’ visionary ideals, driven by the innovative energy of Uranus and Saturn’s structure. During this Half Birthday, consider how your creativity can be channeled into actions that inspire collective progress. Align your inner light with meaningful contributions to your community.",
+                "Virgo-Pisces": "Virgo’s meticulous and analytical perspective, guided by Mercury, balances Pisces’ dreamy and intuitive energy, shaped by Neptune and Jupiter. This Half Birthday invites you to reflect on how your practical skills can bring creative visions to life. Use this time to bridge the gap between the tangible and the imaginative.",
+                "Libra-Aries": "Libra’s quest for harmony, ruled by Venus, contrasts with Aries’ bold assertiveness, driven by Mars’ energetic influence. Your Half Birthday is a moment to explore how seeking peace and fairness can coexist with decisive action. Reflect on how you can bring beauty and balance into even the most challenging situations.",
+                "Scorpio-Taurus": "Scorpio’s transformative and emotionally intense nature, ruled by Pluto and Mars, balances Taurus’ grounded stability, guided by Venus. This Half Birthday invites you to appreciate the depth of your connections while nurturing trust and vulnerability. Use this time to deepen relationships and transform your emotional world.",
+                "Sagittarius-Gemini": "Sagittarius’ expansive and adventurous energy, ruled by Jupiter, contrasts with Gemini’s quick-thinking and curious nature, driven by Mercury. This Half Birthday encourages you to explore new perspectives and celebrate intellectual growth. Reflect on how your connections and adventures can bring you closer to your goals.",
+                "Capricorn-Cancer": "Capricorn’s disciplined ambition, guided by Saturn, contrasts with Cancer’s emotionally intuitive energy, shaped by the Moon. Use this Half Birthday to reflect on how your drive for success can coexist with a deep appreciation for loved ones. Balance your need for structure with moments of gratitude and care.",
+                "Aquarius-Leo": "Aquarius’ visionary thinking, driven by Uranus and Saturn, complements Leo’s vibrant and self-assured energy, ruled by the Sun. This Half Birthday invites you to channel your innovative ideas into creative actions that uplift and inspire others. Reflect on how your leadership can shine a light on collective progress.",
+                "Pisces-Virgo": "Pisces’ intuitive and creative depth, shaped by Neptune and Jupiter, contrasts with Virgo’s precise and detail-oriented nature, guided by Mercury. Your Half Birthday is a time to reflect on how your dreams can take shape in the real world. Use this milestone to weave together compassion, practicality, and inspiration."
+            };
+            const halfBirthdayMessage = zodiacMessages[zodiacKey] || "No specific message for this pairing.";
 
-    const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const halfMonth = monthNames[halfBirthday.getMonth()];
-    const halfDay = halfBirthday.getDate();
+            const halfBirthdayReflection = "A Half Birthday is more than just a date halfway through the year—it’s a time for introspection and balance. Unlike your actual birthday, which celebrates you, your Half Birthday is a moment to pause and appreciate the people, opportunities, and growth in your life. It’s an invitation to reflect on how far you’ve come and to consider what you can give back to the world.";
 
-    const halfZodiac = getZodiacSign(halfBirthday.getDate(), halfBirthday.getMonth() + 1);
-    const zodiacKey = `${userZodiac}-${halfZodiac}`;
-    const halfBirthdayMessage = zodiacMessages[zodiacKey] || "No specific message for this pairing.";
+            document.getElementById("wizardContainer").innerHTML = `
+                <p>Very well, ${userName}. The stars have spoken!</p>
+                <p>Your Half Birthday is: <strong>${halfMonth} ${halfDay}</strong></p>
+                <p>${halfBirthdayMessage}</p>
+                <p>${halfBirthdayReflection}</p>
+                <button onclick="generateImage(${birthDay}, ${birthMonth}, '${halfMonth}', ${halfDay}, '${userZodiac}', '${halfBirthdayMessage}')">
+                    Share Your Half Birthday
+                </button>
+            `;
+        }-${halfZodiac}`;
+            const halfBirthdayMessage = zodiacMessages[zodiacKey] || "No specific message for this pairing.";
 
-    document.getElementById("wizardContainer").innerHTML = `
-        <p>Very well, ${userName}. The stars have spoken!</p>
-        <p>Your Half Birthday is: <strong>${halfMonth} ${halfDay}</strong></p>
-        <p>${halfBirthdayMessage}</p>
-        <p>${halfBirthdayReflection}</p>
-    `;
-}
+            document.getElementById("wizardContainer").innerHTML = `
+                <p>Very well, ${userName}. The stars have spoken!</p>
+                <p>Your Half Birthday is: <strong>${halfMonth} ${halfDay}</strong></p>
+                <p>${halfBirthdayMessage}</p>
+                <button onclick="generateImage(${birthDay}, ${birthMonth}, '${halfMonth}', ${halfDay}, '${userZodiac}', '${halfBirthdayMessage}')">
+                    Share Your Half Birthday
+                </button>
+            `;
+        }
 
+        function generateImage(birthDay, birthMonth, halfMonth, halfDay, userZodiac, halfBirthdayMessage) {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
 
+            canvas.width = 800;
+            canvas.height = 600;
+
+            ctx.fillStyle = "#f3f3f3";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = "bold 28px Arial";
+            ctx.fillStyle = "#007BFF";
+            ctx.textAlign = "center";
+            ctx.fillText("Your Half Birthday!", canvas.width / 2, 60);
+
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "#000";
+            ctx.fillText(`Date: ${halfMonth} ${halfDay}`, canvas.width / 2, 120);
+            ctx.fillText(`Zodiac: ${userZodiac}`, canvas.width / 2, 160);
+            ctx.fillText(halfBirthdayMessage, canvas.width / 2, 220, 700);
+
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#333";
+            ctx.fillText("A Half Birthday is a time to reflect, give back,", canvas.width / 2, 300);
+            ctx.fillText("and appreciate the journey so far.", canvas.width / 2, 340);
+
+            const link = document.createElement("a");
+            link.download = "half_birthday.png";
+            link.href = canvas.toDataURL();
+            link.textContent = "Download Image";
+            link.style.display = "block";
+            link.style.marginTop = "20px";
+            link.style.color = "#007BFF";
+            link.style.textDecoration = "none";
+
+            const wizardContainer = document.getElementById("wizardContainer");
+            wizardContainer.appendChild(canvas);
+            wizardContainer.appendChild(link);
+        }
 
         function getZodiacSign(day, month) {
+            const zodiacSigns = [
+                { sign: "Capricorn", start: [12, 22], end: [1, 19] },
+                { sign: "Aquarius", start: [1, 20], end: [2, 18] },
+                { sign: "Pisces", start: [2, 19], end: [3, 20] },
+                { sign: "Aries", start: [3, 21], end: [4, 19] },
+                { sign: "Taurus", start: [4, 20], end: [5, 20] },
+                { sign: "Gemini", start: [5, 21], end: [6, 20] },
+                { sign: "Cancer", start: [6, 21], end: [7, 22] },
+                { sign: "Leo", start: [7, 23], end: [8, 22] },
+                { sign: "Virgo", start: [8, 23], end: [9, 22] },
+                { sign: "Libra", start: [9, 23], end: [10, 22] },
+                { sign: "Scorpio", start: [10, 23], end: [11, 21] },
+                { sign: "Sagittarius", start: [11, 22], end: [12, 21] }
+            ];
+
             for (let sign of zodiacSigns) {
                 if (
                     (month === sign.start[0] && day >= sign.start[1]) ||
@@ -185,42 +280,6 @@ function castStones(birthDay, birthMonth) {
                     return sign.sign;
                 }
             }
-            return "Capricorn";
-        }
-
-        const zodiacSigns = [
-    { sign: "Capricorn", start: [12, 22], end: [1, 19] },
-    { sign: "Aquarius", start: [1, 20], end: [2, 18] },
-    { sign: "Pisces", start: [2, 19], end: [3, 20] },
-    { sign: "Aries", start: [3, 21], end: [4, 19] },
-    { sign: "Taurus", start: [4, 20], end: [5, 20] },
-    { sign: "Gemini", start: [5, 21], end: [6, 20] },
-    { sign: "Cancer", start: [6, 21], end: [7, 22] },
-    { sign: "Leo", start: [7, 23], end: [8, 22] },
-    { sign: "Virgo", start: [8, 23], end: [9, 22] },
-    { sign: "Libra", start: [9, 23], end: [10, 22] },
-    { sign: "Scorpio", start: [10, 23], end: [11, 21] },
-    { sign: "Sagittarius", start: [11, 22], end: [12, 21] }
-];
-
-
-        const zodiacMessages = {
-    "Aries-Libra": "Aries’ bold and fiery independence, ruled by the energetic planet Mars, contrasts with Libra’s harmonious and Venus-driven quest for balance. This Half Birthday invites you to reflect on how your drive for action can benefit from diplomacy and collaboration. Embrace this moment to nurture relationships while honoring your own passionate pursuits.",
-    "Taurus-Scorpio": "Taurus’ grounded stability, guided by the sensual and comforting influence of Venus, contrasts with Scorpio’s transformative depth, ruled by the intense energies of Pluto and Mars. This Half Birthday is an opportunity to balance your appreciation for life’s comforts with a willingness to embrace deep emotional growth. Let the synergy of these opposing forces help you transform.",
-    "Gemini-Sagittarius": "Gemini’s curious and quick-witted nature, ruled by Mercury, aligns with Sagittarius’ expansive vision and Jupiter’s wisdom. Your Half Birthday is a time to reflect on how your pursuit of knowledge can inspire meaningful growth and adventures. Balance your intellectual agility with a sense of purpose and connection to the bigger picture.",
-    "Cancer-Capricorn": "Cancer’s nurturing and emotionally intuitive energy, guided by the Moon, contrasts with Capricorn’s disciplined and goal-oriented nature, shaped by Saturn’s structure. This Half Birthday encourages you to balance emotional fulfillment with practical achievements. Reflect on how your care for others and your ambitions can coexist to create a more harmonious life.",
-    "Leo-Aquarius": "Leo’s radiant self-expression, ruled by the Sun, complements Aquarius’ visionary ideals, driven by the innovative energy of Uranus and Saturn’s structure. During this Half Birthday, consider how your creativity can be channeled into actions that inspire collective progress. Align your inner light with meaningful contributions to your community.",
-    "Virgo-Pisces": "Virgo’s meticulous and analytical perspective, guided by Mercury, balances Pisces’ dreamy and intuitive energy, shaped by Neptune and Jupiter. This Half Birthday invites you to reflect on how your practical skills can bring creative visions to life. Use this time to bridge the gap between the tangible and the imaginative.",
-    "Libra-Aries": "Libra’s quest for harmony, ruled by Venus, contrasts with Aries’ bold assertiveness, driven by Mars’ energetic influence. Your Half Birthday is a moment to explore how seeking peace and fairness can coexist with decisive action. Reflect on how you can bring beauty and balance into even the most challenging situations.",
-    "Scorpio-Taurus": "Scorpio’s transformative and emotionally intense nature, ruled by Pluto and Mars, balances Taurus’ grounded stability, guided by Venus. This Half Birthday invites you to appreciate the depth of your connections while nurturing trust and vulnerability. Use this time to deepen relationships and transform your emotional world.",
-    "Sagittarius-Gemini": "Sagittarius’ expansive and adventurous energy, ruled by Jupiter, contrasts with Gemini’s quick-thinking and curious nature, driven by Mercury. This Half Birthday encourages you to explore new perspectives and celebrate intellectual growth. Reflect on how your connections and adventures can bring you closer to your goals.",
-    "Capricorn-Cancer": "Capricorn’s disciplined ambition, guided by Saturn, contrasts with Cancer’s emotionally intuitive energy, shaped by the Moon. Use this Half Birthday to reflect on how your drive for success can coexist with a deep appreciation for loved ones. Balance your need for structure with moments of gratitude and care.",
-    "Aquarius-Leo": "Aquarius’ visionary thinking, driven by Uranus and Saturn, complements Leo’s vibrant and self-assured energy, ruled by the Sun. This Half Birthday invites you to channel your innovative ideas into creative actions that uplift and inspire others. Reflect on how your leadership can shine a light on collective progress.",
-    "Pisces-Virgo": "Pisces’ intuitive and creative depth, shaped by Neptune and Jupiter, contrasts with Virgo’s precise and detail-oriented nature, guided by Mercury. Your Half Birthday is a time to reflect on how your dreams can take shape in the real world. Use this milestone to weave together compassion, practicality, and inspiration."
-        };
-
-        const halfBirthdayReflection = 
-            "A Half Birthday is a time for introspection and balance. Unlike your actual birthday, your Half Birthday is a moment to pause and appreciate the growth in your life. Consider what you can give back to the world.";
-    </script>
-</body>
-</html>
+            return "Capricorn"; // Default fallback
+        }},
+                
