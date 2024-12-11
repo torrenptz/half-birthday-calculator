@@ -119,14 +119,6 @@
 }
 
 
-
-            document.getElementById("wizardContainer").innerHTML = `
-                <p>Ah yes! You are ${userZodiac}! Of course, I should have guessed, you are so ${zodiacHumor[userZodiac]}</p>
-                <p>Now, are you ready to cast these stones into the Cavern of Cosmic Wonders?</p>
-                <button onclick="castStones()">Cast Stones</button>
-            `;
-        }
-
 function castStones(birthDay, birthMonth) {
     const celestialMessages = [
         "Reconfiguring the star charts...",
