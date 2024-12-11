@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,21 +9,21 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background-color: #f3f3f3; /* Optional: Light background for readability */
+            background-color: #f3f3f3;
         }
         #wizardContainer {
-            max-width: 600px; /* Constrain text width */
-            margin: 0 auto; /* Center the content horizontally */
-            text-align: center; /* Center-align text */
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
             padding: 20px;
-            background-color: #fff; /* Optional: White background for contrast */
-            border: 1px solid #ccc; /* Optional: Subtle border */
-            border-radius: 10px; /* Rounded corners */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Subtle shadow for depth */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         p {
             margin: 15px 0;
-            line-height: 1.6; /* Improve readability */
+            line-height: 1.6;
         }
         button {
             display: inline-block;
@@ -31,17 +31,17 @@
             padding: 10px 20px;
             font-size: 16px;
             color: #fff;
-            background-color: #007BFF; /* Blue button */
+            background-color: #007BFF;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #0056b3;
         }
         input[type="text"], input[type="number"] {
-            width: 80%; /* Make inputs nicely sized */
+            width: 80%;
             padding: 10px;
             margin: 10px 0;
             font-size: 16px;
@@ -52,20 +52,15 @@
     </style>
 </head>
 <body>
-    <!-- Wizard Flow Container -->
     <div id="wizardContainer">
         <p id="wizardText">Welcome brave traveller, I have been waiting for you. No doubt you have come seeking the ancient magical knowledge of one's Celestial Equinox... or should I say half-birthday. Please weary traveller, take a seat and drink some tea.</p>
         <button id="wizardButton" onclick="startJourney()">Take a seat and drink some tea</button>
     </div>
 
     <script>
-        /* Global Variables */
         let userName = "";
         let userZodiac = "";
 
-        /* Conversational Flow Functions */
-
-        // Start the journey
         function startJourney() {
             const wizardContainer = document.getElementById("wizardContainer");
             wizardContainer.innerHTML = `
@@ -75,7 +70,6 @@
             `;
         }
 
-        // Capture the user's name
         function setName() {
             const nameInput = document.getElementById("userNameInput").value.trim();
             if (!nameInput) {
@@ -91,7 +85,6 @@
             `;
         }
 
-        // Capture the user's birthdate and calculate zodiac
         function setBirthdate() {
             const birthDay = parseInt(document.getElementById("birthDay").value);
             const birthMonth = parseInt(document.getElementById("birthMonth").value);
@@ -104,28 +97,27 @@
             userZodiac = getZodiacSign(birthDay, birthMonth);
 
             const zodiacHumor = {
-                Aries: "always so bold, aren’t you? Charging ahead without hesitation!",
-                Taurus: "steady and grounded, I bet you love a good feast.",
-                Gemini: "chatty and curious! Probably asking questions already.",
-                Cancer: "such a nurturer. The stars say you’re a great hugger.",
-                Leo: "radiant and dramatic! Let me fetch your spotlight.",
-                Virgo: "meticulous and practical, I see you already organizing this adventure.",
-                Libra: "balanced and charming, I feel more harmonious just being near you.",
-                Scorpio: "mysterious and intense… are you reading my mind right now?",
-                Sagittarius: "adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
-                Capricorn: "disciplined and ambitious! Are you running the cosmos now?",
-                Aquarius: "visionary and unique. I bet you’re already thinking about the future.",
-                Pisces: "dreamy and imaginative! Are you even listening, or are you off in a daydream?"
+                Aries: "Always so bold, aren’t you? Charging ahead without hesitation!",
+                Taurus: "Steady and grounded, I bet you love a good feast.",
+                Gemini: "Chatty and curious! Probably asking questions already.",
+                Cancer: "Ah, a nurturer. The stars say you’re a great hugger.",
+                Leo: "Radiant and dramatic! Let me fetch your spotlight.",
+                Virgo: "Meticulous and practical, I see you already organizing this adventure.",
+                Libra: "Balanced and charming, I feel more harmonious just being near you.",
+                Scorpio: "Mysterious and intense… are you reading my mind right now?",
+                Sagittarius: "Adventurous and free-spirited! Let me guess, you’re already planning your next journey.",
+                Capricorn: "Disciplined and ambitious! Are you running the cosmos now?",
+                Aquarius: "Visionary and unique. I bet you’re already thinking about the future.",
+                Pisces: "Dreamy and imaginative! Are you even listening, or are you off in a daydream?"
             };
 
             document.getElementById("wizardContainer").innerHTML = `
-                <p>Ah yes! You are a ${userZodiac}! Of course, I should have guessed, you are so ${zodiacHumor[userZodiac]}</p>
+                <p>Ah yes! You are a ${userZodiac}! Of course, I should have guessed, you are so "${zodiacHumor[userZodiac]}"</p>
                 <p>Now, are you ready to cast these stones into the Cavern of Cosmic Wonders?</p>
                 <button onclick="castStones()">Yes, tell me my half-birthday!</button>
             `;
         }
 
-        // Simulate casting stones and reveal results
         function castStones() {
             const celestialMessages = [
                 "Reconfiguring the star charts...",
@@ -151,7 +143,6 @@
             }, 5000);
         }
 
-        // Show half-birthday results
         function showHalfBirthdayResults() {
             const birthDay = parseInt(document.getElementById("birthDay").value);
             const birthMonth = parseInt(document.getElementById("birthMonth").value);
@@ -178,9 +169,6 @@
             `;
         }
 
-        /* Helper Functions */
-
-        // Determine zodiac sign
         function getZodiacSign(day, month) {
             for (let sign of zodiacSigns) {
                 if (
@@ -190,10 +178,9 @@
                     return sign.sign;
                 }
             }
-            return "Capricorn"; // Default fallback
+            return "Capricorn";
         }
 
-        /* Zodiac Data Section */
         const zodiacSigns = [
             { sign: "Capricorn", start: [12, 22], end: [1, 19] },
             { sign: "Aquarius", start: [1, 20], end: [2, 18] },
